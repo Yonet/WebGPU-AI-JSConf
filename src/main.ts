@@ -21,10 +21,13 @@ document.querySelector<HTMLDivElement>( '#app' )!.innerHTML = `
     </div>
 
     <div class="card">
-      <textarea id="input" rows="4" cols="50">Hello, how are you?</textarea>
+      <textarea id="input" rows="14" cols="80">Click Start Translation button to start translating.</textarea>
+    </div>
+    <div class="card">
+      <textarea id="output" rows="14" cols="80"> Waiting for the translation...</textarea>
     </div>
 
   </div>
 `;
 
-setupTranslator( document.querySelector<HTMLButtonElement>( '#input' )! );
+setupTranslator( document.querySelector<HTMLTextAreaElement>( '#input' )!, document.querySelector<HTMLTextAreaElement>( '#output' )! );
