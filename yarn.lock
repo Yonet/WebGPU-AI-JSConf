@@ -469,6 +469,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.8.tgz#958b91c991b1867ced318bedea0e215ee050726e"
   integrity sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==
 
+"@types/google-translate-api@^2.3.5":
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/@types/google-translate-api/-/google-translate-api-2.3.5.tgz#675c0585b9ea5350fd402673cf01156b68845631"
+  integrity sha512-uW3fdwTrZXktEitB9DojKP7G8K1R7XqravOJLSDrHvnOZTAZ9oEvP4l27i84X+F0FkPfgzLICIX9zYfVjuMtew==
+
 "@types/node@>=13.7.0":
   version "24.5.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-24.5.2.tgz#52ceb83f50fe0fcfdfbd2a9fab6db2e9e7ef6446"

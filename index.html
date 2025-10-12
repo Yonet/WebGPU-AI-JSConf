@@ -9,7 +9,26 @@
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="card">
+      <button id="translator" type="button">Start Translation</button>
+    </div>
+    <p class="read-the-docs">
+      CPU Translation time: <span id="cpu-speed">N/A</span>
+    </p>
+    <p class="read-the-docs">
+      Cloud Translation time: <span id="cloud-speed">N/A</span>
+    </p>
+    <div class="card">
+      <textarea id="input" rows="14" cols="80">Click Start Translation button to start translating.</textarea>
+    </div>
+    <div class="card">
+      <textarea id="cpu-output" rows="14" cols="80">Waiting for the CPU translation...</textarea>
+    </div>
+    <div class="card">
+      <textarea id="cloud-output" rows="14" cols="80">Waiting for the Cloud translation...</textarea>
+    </div>
+  </div>
   <script type="module" src="/src/main.ts"></script>
 
 
