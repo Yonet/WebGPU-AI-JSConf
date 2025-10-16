@@ -1,5 +1,8 @@
 
-import { pipeline, TranslationPipeline, type TranslationOutput } from '@huggingface/transformers';
+import { pipeline, type TranslationOutput } from '@huggingface/transformers';
+
+
+let cpuEndTime: number, cloudEndTime: number = 0;
 
 const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -10,7 +13,7 @@ recognition.lang = "en-US";
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
-const apiKey = "AIzaSyAgBR3wDQMfE58aUc-Gtq5bEPNVv-qPXbo";
+const apiKey = import.meta.env.VITE_GOOGLE_TRANSLATE_API_KEY;
 
 async function translateWithCloud ( text: string, targetLanguage: string ): Promise<string> {
     const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
@@ -31,23 +34,15 @@ async function translateWithCloud ( text: string, targetLanguage: string ): Prom
     }
 
     const data = await response.json();
+    cloudEndTime = performance.now();
     return data.data.translations[0].translatedText;
 }
 
 const translator = await pipeline(
     'translation',
     'Xenova/nllb-200-distilled-600M',
-
+    // { device: 'gpu' }
 );
-
-async function translateWithCPU ( text: string ): Promise<string> {
-    const output: TranslationOutput = await translator( text, {
-        src_lang: 'eng_Latn',
-        tgt_lang: 'ita_Latn'
-    } );
-    console.log( output[0].translation_text );
-    return output[0].translation_text;
-}
 
 export function setupTranslator (
     inputElement: HTMLTextAreaElement,
@@ -57,6 +52,20 @@ export function setupTranslator (
     cpuSpeedElement: HTMLSpanElement,
     cloudSpeedElement: HTMLSpanElement
 ) {
+
+    async function translateWithCPU ( text: string, cb: ( translatedText: string ) => void = function ( translatedText: string ) {
+
+    } ): Promise<string> {
+        const output: TranslationOutput = await translator( text, {
+            src_lang: 'eng_Latn',
+            tgt_lang: 'ita_Latn'
+        } );
+        console.log( output[0].translation_text );
+        cpuEndTime = performance.now();
+        cpuOutputElement.innerHTML = `Translation (CPU): ${output[0].translation_text}`;
+        return output[0].translation_text;
+    };
+
     const startTranslation = () => {
         recognition.start();
         recognition.onresult = async ( event ) => {
@@ -71,15 +80,17 @@ export function setupTranslator (
 
             const cpuStartTime = performance.now();
             const cloudStartTime = performance.now();
-            let cpuEndTime = performance.now();
-            let cloudEndTime = performance.now();
 
-            const cpuTranslation = await translateWithCPU( text ).then( ( t ) => { cpuEndTime = performance.now(); return t; } );
 
-            const cloudTranslation = await translateWithCloud( text, 'it' ).then( ( t ) => { cloudEndTime = performance.now(); return t; } );
+            const cpuTranslation = await translateWithCPU( text ).then( ( t ) => { ; return t; } );
 
-            cpuOutputElement.innerHTML = `Translation (CPU): ${cpuTranslation}`;
-            cloudOutputElement.innerHTML = `Translation (Cloud): ${cloudTranslation}`;
+            const cloudTranslation = await translateWithCloud( text, 'it' ).then( ( t ) => {
+                cloudOutputElement.innerHTML = `Translation (Cloud): ${t}`;
+
+                return t;
+            } );
+
+            // cpuOutputElement.innerHTML = `Translation (CPU): ${cpuTranslation}`;
 
             const cpuDuration = ( cpuEndTime - cpuStartTime ).toFixed( 2 );
             const cloudDuration = ( cloudEndTime - cloudStartTime ).toFixed( 2 );

@@ -16,7 +16,7 @@
 
 textarea {
 	font-family: inherit;
-	font-size: 1em;
+	font-size: 1.5em;
 	line-height: 1.5;
 	padding: 0.5em;
 	border-radius: 8px;
@@ -24,7 +24,7 @@ textarea {
 	background-color: #f9f9f9;
 	color: #213547;
 	resize: vertical;
-	min-height: 100px;
+	height: 100px;
 	width: 100%;
 	box-sizing: border-box;
 }

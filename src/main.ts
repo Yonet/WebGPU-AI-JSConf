@@ -1,5 +1,5 @@
 import './style.css';
-import { setupTranslator } from './mergedTranslator.ts';
+import { setupTranslator } from './translator.ts';
 
 setupTranslator(
   document.querySelector<HTMLTextAreaElement>( '#input' )!,
